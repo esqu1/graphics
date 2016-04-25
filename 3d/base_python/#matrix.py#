@@ -1,0 +1,839 @@
+import math
+
+def make_bezier():
+    b = new_matrix()
+    ident(b)
+    b[0][0] = -1
+    b[1][0] = 3
+    b[2][0] = -3
+    b[3][0] = 1
+
+    b[0][1] = 3
+    b[1][1] = -6
+    b[2][1] = 3
+    b[3][1] = 0
+
+    b[0][2] = -3
+    b[1][2] = 3
+    b[2][2] = 0
+    b[3][2] = 0
+
+    b[0][3] = 1
+    b[3][3] = 0
+    return b
+
+def make_hermite():
+    h = new_matrix()
+    ident(h)
+    h[0][0] = 2
+    h[1][0] = -2
+    h[2][0] = 1
+    h[3][0] = 1
+
+    h[0][1] = -3
+    h[1][1] = 3
+    h[2][1] = -2
+    h[3][1] = -1
+
+    h[0][2] = 0
+    h[1][2] = 0
+    h[2][2] = 1
+    h[3][2] = 0
+
+    h[0][3] = 1
+    h[3][3] = 0
+    return h
+
+def generate_curve_coefs( p1, p2, p3, p4, t ):
+    coefs = new_matrix(4, 1)
+
+    if t == 'bezier':
+        inverse = make_bezier()
+        coefs[0][0] = p1
+        coefs[0][1] = p2
+        coefs[0][2] = p3
+        coefs[0][3] = p4
+    else:
+        inverse = make_hermite()
+        coefs[0][0] = p1
+        coefs[0][1] = p3
+        coefs[0][2] = p2 - p1
+        coefs[0][3] = p4 - p3
+
+    matrix_mult( inverse, coefs )
+    return coefs
+
+    
+
+def make_translate( x, y, z ):
+    t = new_matrix()
+    ident(t)
+    t[3][0] = x
+    t[3][1] = y
+    t[3][2] = z
+    return t
+
+def make_scale( x, y, z ):
+    s = new_matrix()
+    ident(s)
+￼￼
+￼
+￼
+￼
+￼
+TRENDING
+￼
+￼
+Bernie Sanders: Democratic Presidential Candidate Holds Rally in Manhattan's Washington Square Park
+￼
+￼
+Tim Ho Wan: Michelin-Starred Dim Sum Restaurant to Open in New York City's East Village, Report Says
+￼
+￼
+Tribeca Film Festival: 15th Annual Film Festival Takes Place in New York City
+See More
+English (US) · Español · Français (France) · Português (Brasil) · Deutsch · Italiano
+Privacy · Terms · Cookies · Advertising · Ad Choices · 
+More
+Facebook © 2016
+ 
+Update StatusAdd Photos/Video￼￼Choose FilesCreate Photo AlbumChoose a file to upload￼￼Choose Files
+￼
+￼
+What's on your mind?
+Friends
+￼Post
+News Feed
+Jay McNeill and Jules Manalang commented on this.
+￼
+‎Slater Metz‎ to Cubers United
+8 hrs · Whitewater, WI · 
+Hey guys...long time no talk. AAAANyways i decided to take a cube with me when i went to a conference so i had 28 hours of cubing (didnt cube the whole time but still) taught 2 people how to cube overall a good time. So i was just curious what cubes everyone is using now a days. Not even sure where i stopped. I have the zanchi and the zanchi 50mm and 42 mm but idk which others i have. might buy a new cube might not but i wanted to know whats good. And if you want to know yes i forgot a lot of algorithms but someone i can do them in a solve but not after the solve its weird.
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+3Rob Stuart and 2 others
+Comments
+View 1 more comment
+￼
+Nick Stanton Thunderclap!
+Like · Reply · 1 · 7 hrs
+￼
+Jay McNeill replied · 4 Replies · 8 mins
+￼
+Brandon Mikel I like the Meiying
+Like · Reply · 6 hrs
+￼
+Jules Manalang Yuexiao is pretty nice
+Like · Reply · 2 hrs
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+‎Lakshya Karwa‎ to Cyoubx's Friends
+4 mins · 
+Dayan 2x2 vs. LingPo vs. FangShi Shishuang vs. F/s xingyu 
+Plz suggest a good one and any others for speed-cubing
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+Noah Wilde Old plastic dayan for sure
+Like · Reply · 3 mins
+￼
+Mine Hasan Penal Dayan
+Like · Reply · 1 min
+￼
+Shawn Boucké I compared all of those here. https://www.youtube.com/watch?v=wTauT8U3b2M I like the larger size of the Fangshi. Anyone can be sub 3 with any 2x2 on the market today.
+Like · Reply · Just now
+￼
+Mine Hasan Penal How About The Tangpo?
+Like · Reply · Just now
+￼
+￼
+Write a reply...
+￼￼Choose File
+￼
+Isaac Langer None
+Like · Reply · 1 · 1 min
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+Anna Tolen
+1 hr · 
+oversleept :c
+2 -- Conrad Lung Maya
+3 -- Claudia Elissa Nicole
+5 -- Claudia Vanna Ajmain...
+See More
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+1Olivia Gallager
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+Susan Zesty Wahooligans and Dillon Zhang are interested in an event. Brenda Lu and 7 others are going.
+19 mins · 
+￼
+APR
+15
+Interested
+Senior Friday Flannel Day
+Tomorrow 12 AM
+27 people interested · 103 people going
+Rishika Jikaria's Birthday
+￼
+Rishika Jikaria
+Birthday: Today
+￼
+Write a birthday wish on her Timeline...
+￼
+‎Spencer Eo‎ to Rishika Jikaria
+24 mins · 
+HAPPY BIRTHDAY RISHIKA!!!
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+‎Sabrina Huang‎ to Rishika Jikaria
+10 hrs · 
+happy birthday!!! smile emoticon
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+See 19 more posts
+Narrie Shin's Birthday
+￼
+Narrie Shin
+Birthday: Today
+￼
+Write a birthday wish on her Timeline...
+￼
+‎Spencer Eo‎ to Narrie Shin
+24 mins · 
+Happy Birthday Narrie!!
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+See 3 more posts
+￼
+Blder Kaijun
+1 hr · 
+￼
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+55
+Comments
+￼
+Xiaoyu Zhang 好卡通
+Like · Reply · 59 mins
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+The Daily Pennsylvanian
+13 hrs · 
+For the admissions office, these three days are the result of months, even years, of planning, as well as a large amount of money.
+￼
+Money and months of planning lead up to Quaker Days
+THEDP.COM
+88
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+mental_floss
+12 hrs · 
+These horror movies are all real.
+￼
+10 Haunting Documentaries That Are Stranger Than Fiction
+MENTALFLOSS.COM
+161 Comments701 Shares
+908908
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+Tim Reynolds
+20 hrs · Boston, MA · 
+From November. Spoiler alert: it's the 49ers. James Yeung
+￼
+Will 49ers or Warriors lose more games this season?
+The Golden State Warriors improved to 16-0 this season, rolling the Los Angeles Lakers Tuesday evening. The 16th straight win to open the season set an NBA record, and with one more win, the...
+NINERSNATION.COM|BY DAVID FUCILLO
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+33
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+I fucking love science
+19 hrs · 
+These images go viral every so often. What's really underground at Easter Island?
+￼
+Do Easter Island's Statues Really Have Bodies?
+The monolithic rock statues of Easter Island have mystified us for centuries. More recently, confusion about these postcard-friendly monuments has been fueled by viral images that appear to show these stone heads with giant bodies beneath…
+IFLSCIENCE.COM
+964 Comments2.6K Shares
+20K20K
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+Lung Fu
+13 hrs · 
+same
+￼
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+33
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+mental_floss
+16 hrs · 
+The last few seconds are pretty scary.
+￼
+Irish Woman Films 'Ghost' Terrorizing Her Kitchen
+DAILYDOT.COM|BY AUDRA SCHROEDER
+125 Comments115 Shares
+270270
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+The New York Times
+17 hrs · 
+Gigi Gorgeous started her YouTube channel in 2008 when she was known as Gregory Gorgeous. She now has more than 2 million fans.
+￼
+Is Gigi Gorgeous America’s Next Top Model?
+The YouTube star has earned mainstream corporate sponsorships with her makeup tutorials and frank talk about her gender transition.
+NYTIMES.COM|BY SHEILA MARIKAR
+105 Comments47 Shares
+743Caitlin Stanton and 742 others
+Like
+Like
+Love
+Haha
+Wow
+￼￼
+￼
+￼
+￼
+￼
+TRENDING
+￼
+￼
+Bernie Sanders: Democratic Presidential Candidate Holds Rally in Manhattan's Washington Square Park
+￼
+￼
+Tim Ho Wan: Michelin-Starred Dim Sum Restaurant to Open in New York City's East Village, Report Says
+￼
+￼
+Tribeca Film Festival: 15th Annual Film Festival Takes Place in New York City
+See More
+English (US) · Español · Français (France) · Português (Brasil) · Deutsch · Italiano
+Privacy · Terms · Cookies · Advertising · Ad Choices · 
+More
+Facebook © 2016
+ 
+Update StatusAdd Photos/Video￼￼Choose FilesCreate Photo AlbumChoose a file to upload￼￼Choose Files
+￼
+￼
+What's on your mind?
+Friends
+￼Post
+News Feed
+Jay McNeill and Jules Manalang commented on this.
+￼
+‎Slater Metz‎ to Cubers United
+8 hrs · Whitewater, WI · 
+Hey guys...long time no talk. AAAANyways i decided to take a cube with me when i went to a conference so i had 28 hours of cubing (didnt cube the whole time but still) taught 2 people how to cube overall a good time. So i was just curious what cubes everyone is using now a days. Not even sure where i stopped. I have the zanchi and the zanchi 50mm and 42 mm but idk which others i have. might buy a new cube might not but i wanted to know whats good. And if you want to know yes i forgot a lot of algorithms but someone i can do them in a solve but not after the solve its weird.
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+3Rob Stuart and 2 others
+Comments
+View 1 more comment
+￼
+Nick Stanton Thunderclap!
+Like · Reply · 1 · 7 hrs
+￼
+Jay McNeill replied · 4 Replies · 8 mins
+￼
+Brandon Mikel I like the Meiying
+Like · Reply · 6 hrs
+￼
+Jules Manalang Yuexiao is pretty nice
+Like · Reply · 2 hrs
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+‎Lakshya Karwa‎ to Cyoubx's Friends
+4 mins · 
+Dayan 2x2 vs. LingPo vs. FangShi Shishuang vs. F/s xingyu 
+Plz suggest a good one and any others for speed-cubing
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+Noah Wilde Old plastic dayan for sure
+Like · Reply · 3 mins
+￼
+Mine Hasan Penal Dayan
+Like · Reply · 1 min
+￼
+Shawn Boucké I compared all of those here. https://www.youtube.com/watch?v=wTauT8U3b2M I like the larger size of the Fangshi. Anyone can be sub 3 with any 2x2 on the market today.
+Like · Reply · Just now
+￼
+Mine Hasan Penal How About The Tangpo?
+Like · Reply · Just now
+￼
+￼
+Write a reply...
+￼￼Choose File
+￼
+Isaac Langer None
+Like · Reply · 1 · 1 min
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+Anna Tolen
+1 hr · 
+oversleept :c
+2 -- Conrad Lung Maya
+3 -- Claudia Elissa Nicole
+5 -- Claudia Vanna Ajmain...
+See More
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+1Olivia Gallager
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+Susan Zesty Wahooligans and Dillon Zhang are interested in an event. Brenda Lu and 7 others are going.
+19 mins · 
+￼
+APR
+15
+Interested
+Senior Friday Flannel Day
+Tomorrow 12 AM
+27 people interested · 103 people going
+Rishika Jikaria's Birthday
+￼
+Rishika Jikaria
+Birthday: Today
+￼
+Write a birthday wish on her Timeline...
+￼
+‎Spencer Eo‎ to Rishika Jikaria
+24 mins · 
+HAPPY BIRTHDAY RISHIKA!!!
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+‎Sabrina Huang‎ to Rishika Jikaria
+10 hrs · 
+happy birthday!!! smile emoticon
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+See 19 more posts
+Narrie Shin's Birthday
+￼
+Narrie Shin
+Birthday: Today
+￼
+Write a birthday wish on her Timeline...
+￼
+‎Spencer Eo‎ to Narrie Shin
+24 mins · 
+Happy Birthday Narrie!!
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+Comment
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+See 3 more posts
+￼
+Blder Kaijun
+1 hr · 
+￼
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+55
+Comments
+￼
+Xiaoyu Zhang 好卡通
+Like · Reply · 59 mins
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+The Daily Pennsylvanian
+13 hrs · 
+For the admissions office, these three days are the result of months, even years, of planning, as well as a large amount of money.
+￼
+Money and months of planning lead up to Quaker Days
+THEDP.COM
+88
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+mental_floss
+12 hrs · 
+These horror movies are all real.
+￼
+10 Haunting Documentaries That Are Stranger Than Fiction
+MENTALFLOSS.COM
+161 Comments701 Shares
+908908
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+Tim Reynolds
+20 hrs · Boston, MA · 
+From November. Spoiler alert: it's the 49ers. James Yeung
+￼
+Will 49ers or Warriors lose more games this season?
+The Golden State Warriors improved to 16-0 this season, rolling the Los Angeles Lakers Tuesday evening. The 16th straight win to open the season set an NBA record, and with one more win, the...
+NINERSNATION.COM|BY DAVID FUCILLO
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+33
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+I fucking love science
+19 hrs · 
+These images go viral every so often. What's really underground at Easter Island?
+￼
+Do Easter Island's Statues Really Have Bodies?
+The monolithic rock statues of Easter Island have mystified us for centuries. More recently, confusion about these postcard-friendly monuments has been fueled by viral images that appear to show these stone heads with giant bodies beneath…
+IFLSCIENCE.COM
+964 Comments2.6K Shares
+20K20K
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+Lung Fu
+13 hrs · 
+same
+￼
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+33
+Comments
+￼
+￼
+Write a comment...
+￼￼Choose File
+￼
+mental_floss
+16 hrs · 
+The last few seconds are pretty scary.
+￼
+Irish Woman Films 'Ghost' Terrorizing Her Kitchen
+DAILYDOT.COM|BY AUDRA SCHROEDER
+125 Comments115 Shares
+270270
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+￼
+The New York Times
+17 hrs · 
+Gigi Gorgeous started her YouTube channel in 2008 when she was known as Gregory Gorgeous. She now has more than 2 million fans.
+￼
+Is Gigi Gorgeous America’s Next Top Model?
+The YouTube star has earned mainstream corporate sponsorships with her makeup tutorials and frank talk about her gender transition.
+NYTIMES.COM|BY SHEILA MARIKAR
+105 Comments47 Shares
+743Caitlin Stanton and 742 others
+Like
+Like
+Love
+Haha
+Wow
+Sad
+Angry
+CommentShare
+More Stories
+
+Sad
+Angry
+CommentShare
+More Stories
+
+    s[0][0] = x
+    s[1][1] = y
+    s[2][2] = z
+    return s
+    
+def make_rotX( theta ):    
+    rx = new_matrix()
+    ident( rx )
+    rx[1][1] = math.cos( theta )
+    rx[2][1] = -1 * math.sin( theta )
+    rx[1][2] = math.sin( theta )
+    rx[2][2] = math.cos( theta )
+    return rx
+
+def make_rotY( theta ):
+    ry = new_matrix()
+    ident( ry )
+    ry[0][0] = math.cos( theta )
+    ry[2][0] = -1 * math.sin( theta )
+    ry[0][2] = math.sin( theta )
+    ry[2][2] = math.cos( theta )
+    return ry
+
+def make_rotZ( theta ):
+    rz = new_matrix()
+    ident( rz )
+    rz[0][0] = math.cos( theta )
+    rz[1][0] = -1 * math.sin( theta )
+    rz[0][1] = math.sin( theta )
+    rz[1][1] = math.cos( theta )
+    return rz
+
+def new_matrix(rows = 4, cols = 4):
+    m = []
+    for c in range( cols ):
+        m.append( [] )
+        for r in range( rows ):
+            m[c].append( 0 )
+    return m
+
+def print_matrix( matrix ):
+    s = ''
+    for r in range( len( matrix[0] ) ):
+        for c in range( len(matrix) ):
+            s+= str(matrix[c][r]) + ' '
+        s+= '\n'
+    print s
+
+def ident( matrix ):
+    for r in range( len( matrix[0] ) ):
+        for c in range( len( matrix ) ):
+            if r == c:
+                matrix[c][r] = 1
+            else:
+                matrix[c][r] = 0
+
+def scalar_mult( matrix, x ):
+    for r in range( len( matrix[0] ) ):
+        for c in range( len( matrix ) ):
+            matrix[c][r] *= x
+
+#m1 * m2 -> m2
+def matrix_mult( m1, m2 ):
+    
+    t = new_matrix( 4, 1 )
+
+    for c in range( len( m2 ) ):        
+        
+        for r in range(4):
+            t[0][r] = m2[c][r]
+            
+        for r in range(4):
+            m2[c][r] = m1[0][r] * t[0][0] + m1[1][r] * t[0][1] + m1[2][r] * t[0][2] + m1[3][r] * t[0][3]
+
+

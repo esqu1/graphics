@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+\usepackage{esqu1}
+\pagestyle{fancy}
+
+
+\begin{document}
+\section{Hermite Curves}
+A \textbf{Hermite curve} is a curve defined by parametric cubic equations. Note that this does NOT mean that the curve itself is a portion of the graph of a cubic equation; it just means that the $x$ and the $y$ components of the curve are defined by cubic equations.
+
+\[
+\begin{aligned}
+  x(t) &= a_xt^3 + b_xt^2 + c_xt + d_x \\
+  y(t) &= a_yt^3 + b_yt^2 + c_yt + d_x
+\end{aligned}
+\]
+
+Each Hermite curve is defined by four sets of points: 
+\begin{itemize}
+\item Two endpoints: $(x_0,y_0)$ and $(x_1,y_1)$
+\item Two rate-of-change points that say how fast the curve is changing at the endpoints: $(dx_0,dy_0)$ and $(dx_1,dy_1)$.
+\end{itemize}
+
+The problem here is finding the coefficients $a,b,c,d$ from this set of points. 
+
+We will derive the method here for the $x$ components only. For simplicity, we let the function be \[ f(t) = at^3 + bt^2 + ct + d \] \\ \\
+When $t=0$, $f(0) = x_0 = d$ and $f'(0) = dx_0 = c$. \\
+When $t=1$, $f(1) = x_1 = a+b+c+d$ and $f'(1) = dx_1 = 3a + 2b + c$. So:
+
+\[ 
+\begin{bmatrix}
+x_0 \\ x_1 \\ dx_0 \\ dx_1
+\end{bmatrix} =
+\begin{bmatrix}
+d \\ a+b+c+d \\ c \\ 3a + 2b + c 
+\end{bmatrix} =
+\begin{bmatrix}
+0 & 0 & 0 & 1 \\ 1 & 1 & 1 & 1 \\ 0 & 0 & 1 & 0 \\ 3 & 2 & 1 & 0
+\end{bmatrix} \times
+\begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix}
+\]
+\[
+\begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 & -2 & 1 & 1 \\ -3 & 3 & -2 & -1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 0 & 0
+\end{bmatrix} \times
+\begin{bmatrix}
+x_0 \\ x_1 \\ dx_0 \\ dy_0
+\end{bmatrix}
+\]
+
+where the latter matrix is the inverse of the former matrix. And that gives the coefficients of the parametric equation; so now you just have to graph the parametric, and you're done!
+
+\section{Bezier Curves}
+A \textbf{Bezier curve} is a curve with a certain degree. An $n$-degree Bezier curve is defined by $n+1$ points:
+\begin{itemize}
+\item Two endpoints, $P_0$ and $P_n$
+\item $n-2$ ``tugging'' points, $P_1, P_2, \dots, P_{n-1}$
+\end{itemize}
+
+The parametric equation for the Bezier curve is (boldface letter represent matrix representations):
+\[ {\bf B}_n(t) = t^n{\bf P}_n + \sum_{k = 0}^{n-1}(1-t)^{n-k}{\bf P}_k \]
+The first few low-degree Bezier curves look like:
+\[
+\begin{aligned}
+  \text{Linear}&: {\bf B}_1(t) = (1-t){\bf P}_0 + t{\bf P}_1 \\
+  \text{Quadratic}&: {\bf B}_2(t) = (1-t)^2{\bf P}_0 + (1-t){\bf P}_1 + t^2{\bf P}_2 \\
+  \text{Cubic}&: {\bf B}_3(t) = (1-t)^3{\bf P}_0 + (1-t)^2{\bf P}_1 + (1-t){\bf P}_2 + t^3{\bf P}_3
+\end{aligned}
+\]
+
+\end{document}

@@ -1,0 +1,6 @@
+clear
+translate
+-250 -250
+torus
+500 250 25 150
+display
