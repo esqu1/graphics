@@ -4,24 +4,24 @@ GRAPHICS
 Since I'm not taking the class, I decided to take up doing these assignments on my own.
 
 - Line
-..- C (unfinished)
-..- Python (unfinished)
+  - C (unfinished)
+  - Python (unfinished)
 - Matrix
-..- C
-..- Python
+  - C
+  - Python
 - Curves
-..- C (unfinished)
-..- Python
+  - C (unfinished)
+  - Python
 - 3D
-..- C (unfinished)
-..- Python
+  - C (unfinished)
+  - Python
 - Polygons
-..- C (unfinished)
-..- Python
+  - C (unfinished)
+  - Python
 - CStack
-..- C
-..- Python (unfinished)
+  - C
+  - Python (unfinished)
 - MDL
-..- C
-..- Java (unfinished)
-..- Python (unfinished)
+  - C
+  - Java (unfinished)
+  - Python (unfinished)
