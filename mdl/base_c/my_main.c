@@ -60,6 +60,10 @@ void my_main( int polygons ) {
   struct stack *s;
   screen t;
   color g;
+
+  g.red = 0;
+  g.green = 255;
+  g.blue = 0;
   
   s = new_stack();
   tmp = new_matrix(4, 1000);
@@ -104,13 +108,13 @@ void my_main( int polygons ) {
       transform = make_translate(op[i].op.move.d[0],op[i].op.move.d[1],op[i].op.move.d[2]);
       matrix_mult(s->data[s->top],transform);
       copy_matrix(transform,s->data[s->top]);
-      free_matrix(transform);
+      //free_matrix(transform);
       break;
     case SCALE:
-      transform = make_scale(op[i].op.scale.d[0],op[i].op.scale.d[1],op[i].op.scale.d[2]);
+      transform = make_scale(op[i].op.move.d[0],op[i].op.move.d[1],op[i].op.move.d[2]);
       matrix_mult(s->data[s->top],transform);
       copy_matrix(transform,s->data[s->top]);
-      free_matrix(transform);
+      //free_matrix(transform);
       break;
     case ROTATE:
       if (op[i].op.rotate.axis==0){
@@ -122,7 +126,7 @@ void my_main( int polygons ) {
       }
       matrix_mult(s->data[s->top],transform);
       copy_matrix(transform,s->data[s->top]);
-      free_matrix(transform);
+      //free_matrix(transform);
       break;
     case DISPLAY:
       display(t);
