@@ -51,7 +51,7 @@
 #include "stack.h"
 
 void my_main( int polygons ) {
-
+  
   int i;
   double step;
   double xval, yval, zval;
@@ -64,9 +64,11 @@ void my_main( int polygons ) {
   s = new_stack();
   tmp = new_matrix(4, 1000);
   clear_screen( t );
-
+  
   for (i=0;i<lastop;i++) { 
-    printf("%s\n",op[i].opcode);
+    
+    //printf("%s\n",op[i].opcode);
+    
     switch (op[i].opcode) {
     case LINE:
       add_edge(tmp,op[i].op.line.p0[0],op[i].op.line.p0[1],op[i].op.line.p0[2],op[i].op.line.p1[0],op[i].op.line.p1[1],op[i].op.line.p1[2]);
@@ -87,7 +89,7 @@ void my_main( int polygons ) {
       tmp->lastcol = 0;
       break;
     case BOX:
-      add_box(tmp,op[i].op.box.d0[0],op[i].op.box.d0[0],op[i].op.box.d0[0],op[i].op.box.d0[0],op[i].op.box.d0[0],op[i].op.box.d0[0]);
+      add_box(tmp,op[i].op.box.d0[0],op[i].op.box.d0[1],op[i].op.box.d0[2],op[i].op.box.d1[0],op[i].op.box.d1[1],op[i].op.box.d1[2]);
       matrix_mult(s->data[s->top],tmp);
       draw_polygons(tmp,t,g);
       tmp->lastcol = 0;
@@ -99,33 +101,42 @@ void my_main( int polygons ) {
       pop(s);
       break;
     case MOVE:
-      tmp = make_translate(op[i].op.move.d[0],op[i].op.move.d[1],op[i].op.move.d[2]);
-      matrix_mult(s->data[s->top],tmp);
-      copy_matrix(tmp,s->data[s->top]);
-      tmp->lastcol = 0;
+      transform = make_translate(op[i].op.move.d[0],op[i].op.move.d[1],op[i].op.move.d[2]);
+      matrix_mult(s->data[s->top],transform);
+      copy_matrix(transform,s->data[s->top]);
+      free_matrix(transform);
       break;
     case SCALE:
-      tmp = make_scale(op[i].op.move.d[0],op[i].op.move.d[1],op[i].op.move.d[2]);
-      matrix_mult(s->data[s->top],tmp);
-      copy_matrix(tmp,s->data[s->top]);
-      tmp->lastcol = 0;
+      transform = make_scale(op[i].op.scale.d[0],op[i].op.scale.d[1],op[i].op.scale.d[2]);
+      matrix_mult(s->data[s->top],transform);
+      copy_matrix(transform,s->data[s->top]);
+      free_matrix(transform);
       break;
     case ROTATE:
       if (op[i].op.rotate.axis==0){
-	tmp = make_rotX(op[lastop].op.rotate.degrees);
+	transform = make_rotX(op[i].op.rotate.degrees * (M_PI / 180));
       } else if (op[i].op.rotate.axis==1){ 
-	tmp = make_rotY(op[lastop].op.rotate.degrees);
+	transform = make_rotY(op[i].op.rotate.degrees * (M_PI / 180));
       } else if (op[i].op.rotate.axis==2){
-	tmp = make_rotZ(op[lastop].op.rotate.degrees);
+	transform = make_rotZ(op[i].op.rotate.degrees * (M_PI / 180));
       }
-      matrix_mult(s->data[s->top],tmp);
-      copy_matrix(tmp,s->data[s->top]);
-      tmp->lastcol = 0;
+      matrix_mult(s->data[s->top],transform);
+      copy_matrix(transform,s->data[s->top]);
+      free_matrix(transform);
       break;
     case DISPLAY:
       display(t);
+      break;
     case SAVE:
-      save_extension(t,op[i].op.save.p);
+      save_extension(t,op[i].op.save.p->name);
+      break;
+    default:
+      break;
     }
+    
   }
+  
+  free_matrix(tmp);
+  free_stack(s);
+    
 }
