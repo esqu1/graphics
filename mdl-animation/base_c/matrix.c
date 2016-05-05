@@ -268,10 +268,38 @@ struct matrix * make_rotZ(double theta) {
 
 /*======== struct matrix * make_bezier()) ==========
   Inputs:   
-  Returns: The correct 4x4 matrix that can be used 
-  to generate the coefiecients for a bezier curve
+  Returns: 
+
+  The correct 4x4 matrix that can be used to generate
+  the coefiecients for a bezier curve
+
+  03/16/12 14:36:19
+  jdyrlandweaver
   ====================*/
 struct matrix * make_bezier() {
+
+  struct matrix *m = new_matrix(4, 4);
+  ident(m);
+
+  m->m[0][0] = -1;
+  m->m[0][1] = 3;
+  m->m[0][2] = -3;
+  m->m[0][3] = 1;
+
+  m->m[1][0] = 3;
+  m->m[1][1] = -6;
+  m->m[1][2] = 3;
+  m->m[1][3] = 0;
+
+  m->m[2][0] = -3;
+  m->m[2][1] = 3;
+  m->m[2][2] = 0;
+  m->m[2][3] = 0;
+
+  m->m[3][0] = 1;
+  m->m[3][3] = 0;
+
+  return m;
 }
 
 /*======== struct matrix * make_hermite()) ==========
@@ -280,8 +308,34 @@ struct matrix * make_bezier() {
 
   The correct 4x4 matrix that can be used to generate
   the coefiecients for a hermite curve
+
+  03/16/12 14:36:19
+  jdyrlandweaver
   ====================*/
 struct matrix * make_hermite() {
+
+  struct matrix *m = new_matrix(4, 4);
+  ident(m);
+
+  m->m[0][0] = 2;
+  m->m[0][1] = -2;
+  m->m[0][2] = 1;
+  m->m[0][3] = 1;
+
+  m->m[1][0] = -3;
+  m->m[1][1] = 3;
+  m->m[1][2] = -2;
+  m->m[1][3] = -1;
+
+  m->m[2][0] = 0;
+  m->m[2][1] = 0;
+  m->m[2][2] = 1;
+  m->m[2][3] = 0;
+
+  m->m[3][0] = 1;
+  m->m[3][3] = 0;
+
+  return m;
 }
 
 /*======== struct matrix * generate_curve_coefs() ==========
@@ -297,8 +351,41 @@ struct matrix * make_hermite() {
   by p1, p2, p3 and p4.
   
   Type determines whether the curve is bezier or hermite
+
+  03/16/12 14:42:46
+  jdyrlandweaver
   ====================*/
 struct matrix * generate_curve_coefs( double p1, double p2, 
 				      double p3, double p4, int type) {
+  
+  struct matrix * inverse;
+  struct matrix * coefs;
+
+  if ( type == BEZIER_MODE )    
+    inverse = make_bezier();
+  else
+    inverse = make_hermite();
+
+  coefs = new_matrix(4, 1);
+
+  if ( type == BEZIER_MODE ) {
+    coefs->m[0][0] = p1;
+    coefs->m[1][0] = p2;
+    coefs->m[2][0] = p3;
+    coefs->m[3][0] = p4;
+  }  
+
+  else {
+    coefs->m[0][0] = p1;
+    coefs->m[1][0] = p3;
+    coefs->m[2][0] = p2 - p1;
+    coefs->m[3][0] = p4 - p3;
+  }
+ 
+  matrix_mult(inverse, coefs);
+
+  free_matrix(inverse);
+    
+  return coefs;  
 }
 
