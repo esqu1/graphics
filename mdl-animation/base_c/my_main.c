@@ -15,7 +15,7 @@
   basename: set name (in misc_headers.h) for animation
 
   vary: manipluate knob values between two given frames
-        over a specified interval
+  over a specified interval
 
   set: set a knob to a given value
   
@@ -26,19 +26,19 @@
   pop: remove the top matrix on the origin stack
 
   move/scale/rotate: create a transformation matrix 
-                     based on the provided values, then 
-		     multiply the current top of the
-		     origins stack by it.
+  based on the provided values, then 
+  multiply the current top of the
+  origins stack by it.
 
   box/sphere/torus: create a solid object based on the
-                    provided values. Store that in a 
-		    temporary matrix, multiply it by the
-		    current top of the origins stack, then
-		    call draw_polygons.
+  provided values. Store that in a 
+  temporary matrix, multiply it by the
+  current top of the origins stack, then
+  call draw_polygons.
 
   line: create a line based on the provided values. Store 
-        that in a temporary matrix, multiply it by the
-	current top of the origins stack, then call draw_lines.
+  that in a temporary matrix, multiply it by the
+  current top of the origins stack, then call draw_lines.
 
   save: call save_extension with the provided filename
 
@@ -82,6 +82,30 @@
   jdyrlandweaver
   ====================*/
 void first_pass() {
+  int presentf,presentb,presentv,i;
+  
+  for(i=0;i<lastop;i++){
+    switch(op[i].opcode){
+    case FRAMES:
+      num_frames = op[i].op.frames.num_frames;
+      presentf = 1;
+      break;
+    case BASENAME:
+      basename = op[i].op.basename.p->name;
+      presentb = 1;
+      break;
+    case VARY:
+      presentv = 1;
+      break;
+    }
+  }
+  if(presentv == 1 && presentf == 0){
+    exit(0);
+  }
+  if(presentf == 1 && presentb == 0){
+    strcpy(basename,"pic");
+    printf("Default name set to pic");
+  }
 }
 
 /*======== struct vary_node ** second_pass()) ==========
@@ -107,18 +131,47 @@ void first_pass() {
   jdyrlandweaver
   ====================*/
 struct vary_node ** second_pass() {
+  int i,j;
+  struct vary_node ** knobs = (struct vary_node **)malloc(num_frames * sizeof(struct vary_node *));
+  for(i=0;i<num_frames;i++){
+    knobs[i] = (struct vary_node *)malloc(sizeof(struct vary_node));
+  }
+  for(i=0;i<lastop;i++){
+    if(op[i].opcode == VARY){
+      int start_frame = op[i].op.vary.start_frame;
+      int end_frame = op[i].op.vary.end_frame;
+      double start_val = op[i].op.vary.start_val;
+      int end_val = op[i].op.vary.end_val;
+      for(j = start_frame; j <= end_frame; j++){
+	double val = start_val + ((end_val - start_val) / (end_frame - start_frame))*(j - start_frame);
+	//printf("%f\n",val);	
+	struct vary_node * current = knobs[j];
+	while(current->next){
+	  current = current->next;
+	}
+	current->next = (struct vary_node *)malloc(sizeof(struct vary_node));
+	strcpy((current->next)->name, op[i].op.vary.p->name);
+	//printf("%s\n",(current->next)->name);
+	(current->next)->value = val; 
+	current = current->next;
+      }
+    }
+  }
+  struct vary_node * v = knobs[0];
+  printf("success\n");
+  return knobs;
 }
 
 
 /*======== void print_knobs() ==========
-Inputs:   
-Returns: 
+  Inputs:   
+  Returns: 
 
-Goes through symtab and display all the knobs and their
-currnt values
+  Goes through symtab and display all the knobs and their
+  currnt values
 
-jdyrlandweaver
-====================*/
+  jdyrlandweaver
+  ====================*/
 void print_knobs() {
   
   int i;
@@ -167,18 +220,19 @@ void print_knobs() {
   jdyrlandweaver
   ====================*/
 void my_main( int polygons ) {
+  print_knobs();
 
   int i, f, j;
   double step;
   double xval, yval, zval, knob_value;
-  struct matrix *transform;
-  struct matrix *tmp;
-  struct stack *s;
+  struct matrix *transform = new_matrix(4,1000);
+  struct matrix *tmp = new_matrix(4,1000);
+  struct stack *s = new_stack();
   screen t;
   color g;
 
   struct vary_node **knobs;
-  struct vary_node *vn;
+  struct vary_node * vn;
   char frame_name[128];
 
   num_frames = 1;
@@ -188,11 +242,17 @@ void my_main( int polygons ) {
   g.green = 255;
   g.blue = 255;
 
-    
-    for (i=0;i<lastop;i++) {
-  
-      switch (op[i].opcode) {
+  first_pass();
+  knobs = second_pass();
+  if(basename){
+    strcpy(frame_name,basename);
+  }
 
+  for(f=0;f<num_frames;f++){
+    vn = knobs[f]->next;
+    for (i=0;i<lastop;i++) {
+      printf("(%d,%d)\n",f,i);
+      switch (op[i].opcode) {
       case SPHERE:
 	add_sphere( tmp,op[i].op.sphere.d[0], //cx
 		    op[i].op.sphere.d[1],  //cy
@@ -203,6 +263,7 @@ void my_main( int polygons ) {
 	matrix_mult( s->data[ s->top ], tmp );
 	draw_polygons( tmp, t, g );
 	tmp->lastcol = 0;
+	
 	break;
 
       case TORUS:
@@ -242,9 +303,16 @@ void my_main( int polygons ) {
 
       case MOVE:
 	//get the factors
-	xval = op[i].op.move.d[0];
-	yval =  op[i].op.move.d[1];
-	zval = op[i].op.move.d[2];
+	if(op[i].op.move.p){
+	  xval = op[i].op.move.d[0] * vn->value;
+	  yval =  op[i].op.move.d[1] * vn->value;
+	  zval = op[i].op.move.d[2] * vn->value;
+	  vn = vn->next;
+	}else{
+	  xval = op[i].op.move.d[0];
+	  yval =  op[i].op.move.d[1];
+	  zval = op[i].op.move.d[2];
+	}
       
 	transform = make_translate( xval, yval, zval );
 	//multiply by the existing origin
@@ -254,20 +322,33 @@ void my_main( int polygons ) {
 	free_matrix( transform );
 	break;
 
-      case SCALE:
-	xval = op[i].op.scale.d[0];
-	yval = op[i].op.scale.d[1];
-	zval = op[i].op.scale.d[2];
-      
+      case SCALE:	
+	if(op[i].op.scale.p){
+	  xval = op[i].op.scale.d[0] * vn->value;
+	  yval = op[i].op.scale.d[1] * vn->value;
+	  zval = op[i].op.scale.d[2] * vn->value;
+	  vn = vn->next;      
+	}else{
+	  xval = op[i].op.scale.d[0];
+	  yval = op[i].op.scale.d[1];
+	  zval = op[i].op.scale.d[2];
+	}
 	transform = make_scale( xval, yval, zval );
 	matrix_mult( s->data[ s->top ], transform );
 	//put the new matrix on the top
 	copy_matrix( transform, s->data[ s->top ] );
 	free_matrix( transform );
+
 	break;
 
       case ROTATE:
-	xval = op[i].op.rotate.degrees * ( M_PI / 180 );
+	if(op[i].op.rotate.p){
+	  printf("%f\n",vn->value);
+	  xval = op[i].op.rotate.degrees * ( M_PI / 180 ) * vn->value;
+	  vn = vn->next;
+	}else{
+	  xval = op[i].op.rotate.degrees * ( M_PI / 180 );
+	}
 
 	//get the axis
 	if ( op[i].op.rotate.axis == 0 ) 
@@ -282,8 +363,8 @@ void my_main( int polygons ) {
 	copy_matrix( transform, s->data[ s->top ] );
 	free_matrix( transform );
 	break;
-
       case PUSH:
+	printf("what what\n");
 	push( s );
 	break;
       case POP:
@@ -295,10 +376,31 @@ void my_main( int polygons ) {
       case DISPLAY:
 	display( t );
 	break;
+      case SET:
+	set_value(op[i].op.set.p,op[i].op.set.val);
+	break;
+      case SETKNOBS:
+	knob_value = op[i].op.setknobs.value;
+	break;
+      default:
+	break;
       }
     }
-  
+    mkdir(basename,0777);
+    char filename[128];
+    sprintf(filename,"%s/%s%03d.png",basename,basename,f);
+    save_extension(t, filename);
+    clear_screen(t);
+    free_matrix(tmp);
+    tmp = new_matrix(4,1000);
     free_stack( s );
+    s = new_stack();
+  }
+
+  //printf("i'm here\n");
+    //printf("still here\n");
     free_matrix( tmp );
+    //printf("yet here\n");
     //free_matrix( transform );
+    //printf("we made it\n");
 }

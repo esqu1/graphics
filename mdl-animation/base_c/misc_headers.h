@@ -3,6 +3,7 @@
 
 int num_frames;
 char name[128];
+char * basename;
 
 struct vary_node {
   
