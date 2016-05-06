@@ -144,23 +144,34 @@ struct vary_node ** second_pass() {
       int end_val = op[i].op.vary.end_val;
       for(j = start_frame; j <= end_frame; j++){
 	double val = start_val + ((end_val - start_val) / (end_frame - start_frame))*(j - start_frame);
-	//printf("%f\n",val);	
 	struct vary_node * current = knobs[j];
 	while(current->next){
 	  current = current->next;
 	}
 	current->next = (struct vary_node *)malloc(sizeof(struct vary_node));
 	strcpy((current->next)->name, op[i].op.vary.p->name);
-	//printf("%s\n",(current->next)->name);
 	(current->next)->value = val; 
 	current = current->next;
       }
     }
   }
-  struct vary_node * v = knobs[0];
-  printf("success\n");
   return knobs;
 }
+/*
+void process_knobs(){
+  struct vary_node * knobs = (struct vary_node *)malloc(sizeof(struct vary_node));
+  struct vary_node * current = knobs;
+  for(i=0;i<lastsym;i++){
+    if(symtab[i].type == SYM_VALUE){
+      current->next = (struct vary_node *)malloc(sizeof(struct vary_node));
+      current->name = symtab[i].name;
+      current->value = symtab[i].s.value;
+      current = current->next;
+    }
+  }
+  return knobs;
+  }*/
+
 
 
 /*======== void print_knobs() ==========
@@ -233,6 +244,7 @@ void my_main( int polygons ) {
 
   struct vary_node **knobs;
   struct vary_node * vn;
+  struct vary_node * sf; // For one frame only
   char frame_name[128];
 
   num_frames = 1;
@@ -243,13 +255,19 @@ void my_main( int polygons ) {
   g.blue = 255;
 
   first_pass();
-  knobs = second_pass();
+  if(num_frames > 1){
+    knobs = second_pass();
+  }/*else{
+    sf = process_knobs();
+    }*/
   if(basename){
     strcpy(frame_name,basename);
   }
 
   for(f=0;f<num_frames;f++){
-    vn = knobs[f]->next;
+    if(num_frames > 1){
+      vn = knobs[f]->next;
+    }
     for (i=0;i<lastop;i++) {
       printf("(%d,%d)\n",f,i);
       switch (op[i].opcode) {
@@ -303,11 +321,19 @@ void my_main( int polygons ) {
 
       case MOVE:
 	//get the factors
-	if(op[i].op.move.p){
+	if(op[i].op.move.p && num_frames > 1){
 	  xval = op[i].op.move.d[0] * vn->value;
 	  yval =  op[i].op.move.d[1] * vn->value;
 	  zval = op[i].op.move.d[2] * vn->value;
 	  vn = vn->next;
+	}else if(op[i].op.move.p && num_frames == 1){
+	  vn = sf;
+	  while(strcmp(vn->name,op[i].op.move.p->name)!= 0){
+	    vn = vn->next;
+	  }
+	  xval = op[i].op.move.d[0] * vn->value;
+	  yval =  op[i].op.move.d[1] * vn->value;
+	  zval = op[i].op.move.d[2] * vn->value;
 	}else{
 	  xval = op[i].op.move.d[0];
 	  yval =  op[i].op.move.d[1];
@@ -343,7 +369,6 @@ void my_main( int polygons ) {
 
       case ROTATE:
 	if(op[i].op.rotate.p){
-	  printf("%f\n",vn->value);
 	  xval = op[i].op.rotate.degrees * ( M_PI / 180 ) * vn->value;
 	  vn = vn->next;
 	}else{
@@ -364,7 +389,6 @@ void my_main( int polygons ) {
 	free_matrix( transform );
 	break;
       case PUSH:
-	printf("what what\n");
 	push( s );
 	break;
       case POP:
@@ -390,17 +414,12 @@ void my_main( int polygons ) {
     char filename[128];
     sprintf(filename,"%s/%s%03d.png",basename,basename,f);
     save_extension(t, filename);
+    printf("Frame %d done!\n",f);
+
     clear_screen(t);
     free_matrix(tmp);
     tmp = new_matrix(4,1000);
     free_stack( s );
     s = new_stack();
   }
-
-  //printf("i'm here\n");
-    //printf("still here\n");
-    free_matrix( tmp );
-    //printf("yet here\n");
-    //free_matrix( transform );
-    //printf("we made it\n");
 }
