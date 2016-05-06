@@ -264,6 +264,8 @@ void my_main( int polygons ) {
     strcpy(frame_name,basename);
   }
 
+  printf("asdf%s\n",(knobs[30]->next->next)->name);
+
   for(f=0;f<num_frames;f++){
     if(num_frames > 1){
       vn = knobs[f]->next;
@@ -321,22 +323,23 @@ void my_main( int polygons ) {
 
       case MOVE:
 	//get the factors
-	if(op[i].op.move.p && num_frames > 1){
-	  xval = op[i].op.move.d[0] * vn->value;
-	  yval =  op[i].op.move.d[1] * vn->value;
-	  zval = op[i].op.move.d[2] * vn->value;
-	  vn = vn->next;
-	}else if(op[i].op.move.p && num_frames == 1){
-	  vn = sf;
-	  while(strcmp(vn->name,op[i].op.move.p->name)!= 0){
+	if(op[i].op.move.p){
+	  while(strcmp(op[i].op.move.p->name,vn->name) != 0){
 	    vn = vn->next;
+	    if(!vn){
+	      break;
+	    }
+	  }if(!vn){
+	    vn = knobs[f]->next;
+	    break;
 	  }
 	  xval = op[i].op.move.d[0] * vn->value;
-	  yval =  op[i].op.move.d[1] * vn->value;
+	  yval = op[i].op.move.d[1] * vn->value;
 	  zval = op[i].op.move.d[2] * vn->value;
+	  vn = knobs[f]->next;
 	}else{
 	  xval = op[i].op.move.d[0];
-	  yval =  op[i].op.move.d[1];
+	  yval = op[i].op.move.d[1];
 	  zval = op[i].op.move.d[2];
 	}
       
@@ -348,12 +351,24 @@ void my_main( int polygons ) {
 	free_matrix( transform );
 	break;
 
-      case SCALE:	
+      case SCALE:
 	if(op[i].op.scale.p){
+	  printf("%s\n",op[i].op.scale.p->name);
+	  printf("%s\n",vn->name);
+	  while(strcmp(op[i].op.scale.p->name,vn->name) != 0){
+	    vn = vn->next;
+	    if(!vn){
+	      break;
+	    }
+	  }
+	  if(!vn){
+	    vn = knobs[f]->next;
+	    break;
+	  }
 	  xval = op[i].op.scale.d[0] * vn->value;
 	  yval = op[i].op.scale.d[1] * vn->value;
 	  zval = op[i].op.scale.d[2] * vn->value;
-	  vn = vn->next;      
+	  vn = knobs[f]->next;      
 	}else{
 	  xval = op[i].op.scale.d[0];
 	  yval = op[i].op.scale.d[1];
@@ -369,8 +384,17 @@ void my_main( int polygons ) {
 
       case ROTATE:
 	if(op[i].op.rotate.p){
+	  while(strcmp(op[i].op.rotate.p->name,vn->name) != 0){
+	    vn = vn->next;
+	    if(!vn){
+	      break;
+	    }
+	  }if(!vn){
+	    vn = knobs[f]->next;
+	    break;
+	  }
 	  xval = op[i].op.rotate.degrees * ( M_PI / 180 ) * vn->value;
-	  vn = vn->next;
+	  vn = knobs[f]->next;
 	}else{
 	  xval = op[i].op.rotate.degrees * ( M_PI / 180 );
 	}
