@@ -153,6 +153,16 @@ struct vary_node ** second_pass() {
 	(current->next)->value = val; 
 	current = current->next;
       }
+    }else if(op[i].opcode == SET){
+      for(j = 0; j < num_frames; j++){
+	struct vary_node * current = knobs[j];
+	while(current->next){
+	  current = current->next;
+	}
+	current->next = (struct vary_node *)malloc(sizeof(struct vary_node));
+	strcpy((current->next)->name, op[i].op.set.p->name);
+	current->next->value = op[i].op.set.val;
+      }
     }
   }
   return knobs;
@@ -231,7 +241,7 @@ void print_knobs() {
   jdyrlandweaver
   ====================*/
 void my_main( int polygons ) {
-  print_knobs();
+  //print_knobs();
 
   int i, f, j;
   double step;
@@ -255,16 +265,12 @@ void my_main( int polygons ) {
   g.blue = 255;
 
   first_pass();
-  if(num_frames > 1){
-    knobs = second_pass();
-  }/*else{
-    sf = process_knobs();
-    }*/
+  //if(num_frames > 1){
+  knobs = second_pass();
+    //}
   if(basename){
     strcpy(frame_name,basename);
   }
-
-  printf("asdf%s\n",(knobs[30]->next->next)->name);
 
   for(f=0;f<num_frames;f++){
     if(num_frames > 1){
