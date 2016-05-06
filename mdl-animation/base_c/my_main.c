@@ -241,8 +241,6 @@ void print_knobs() {
   jdyrlandweaver
   ====================*/
 void my_main( int polygons ) {
-  //print_knobs();
-
   int i, f, j;
   double step;
   double xval, yval, zval, knob_value;
@@ -265,9 +263,7 @@ void my_main( int polygons ) {
   g.blue = 255;
 
   first_pass();
-  //if(num_frames > 1){
   knobs = second_pass();
-    //}
   if(basename){
     strcpy(frame_name,basename);
   }
@@ -277,7 +273,7 @@ void my_main( int polygons ) {
       vn = knobs[f]->next;
     }
     for (i=0;i<lastop;i++) {
-      printf("(%d,%d)\n",f,i);
+      //printf("(%d,%d)\n",f,i);
       switch (op[i].opcode) {
       case SPHERE:
 	add_sphere( tmp,op[i].op.sphere.d[0], //cx
@@ -359,8 +355,6 @@ void my_main( int polygons ) {
 
       case SCALE:
 	if(op[i].op.scale.p){
-	  printf("%s\n",op[i].op.scale.p->name);
-	  printf("%s\n",vn->name);
 	  while(strcmp(op[i].op.scale.p->name,vn->name) != 0){
 	    vn = vn->next;
 	    if(!vn){
@@ -441,9 +435,8 @@ void my_main( int polygons ) {
       }
     }
     mkdir(basename,0777);
-    char filename[128];
-    sprintf(filename,"%s/%s%03d.png",basename,basename,f);
-    save_extension(t, filename);
+    sprintf(frame_name,"%s/%s%03d.png",basename,basename,f);
+    save_extension(t, frame_name);
     printf("Frame %d done!\n",f);
 
     clear_screen(t);
@@ -452,4 +445,5 @@ void my_main( int polygons ) {
     free_stack( s );
     s = new_stack();
   }
+  printf("Render complete. (files in %s/)\n",basename);
 }
