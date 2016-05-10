@@ -273,7 +273,7 @@ void my_main( int polygons ) {
       vn = knobs[f]->next;
     }
     for (i=0;i<lastop;i++) {
-      //printf("(%d,%d)\n",f,i);
+      printf("(%d,%d)\n",f,i);
       switch (op[i].opcode) {
       case SPHERE:
 	add_sphere( tmp,op[i].op.sphere.d[0], //cx
@@ -326,13 +326,14 @@ void my_main( int polygons ) {
       case MOVE:
 	//get the factors
 	if(op[i].op.move.p){
-	  while(strcmp(op[i].op.move.p->name,vn->name) != 0){
-	    vn = vn->next;
-	    if(!vn){
-	      break;
+	  if(vn){
+	    while(strcmp(op[i].op.move.p->name,vn->name) != 0){
+	      vn = vn->next;
+	      if(!vn){
+		break;
+	      }
 	    }
-	  }if(!vn){
-	    vn = knobs[f]->next;
+	  }if(!vn) {
 	    break;
 	  }
 	  xval = op[i].op.move.d[0] * vn->value;
@@ -355,16 +356,17 @@ void my_main( int polygons ) {
 
       case SCALE:
 	if(op[i].op.scale.p){
-	  while(strcmp(op[i].op.scale.p->name,vn->name) != 0){
-	    vn = vn->next;
-	    if(!vn){
-	      break;
+	  if(vn){
+	    while(strcmp(op[i].op.scale.p->name,vn->name) != 0){
+	      vn = vn->next;
+	      if(!vn){
+		break;
+	      }
 	    }
-	  }
-	  if(!vn){
-	    vn = knobs[f]->next;
+	  }if(!vn) {
 	    break;
 	  }
+	  printf("asdf\n");
 	  xval = op[i].op.scale.d[0] * vn->value;
 	  yval = op[i].op.scale.d[1] * vn->value;
 	  zval = op[i].op.scale.d[2] * vn->value;
@@ -384,13 +386,14 @@ void my_main( int polygons ) {
 
       case ROTATE:
 	if(op[i].op.rotate.p){
-	  while(strcmp(op[i].op.rotate.p->name,vn->name) != 0){
-	    vn = vn->next;
-	    if(!vn){
-	      break;
+	  if(vn){
+	    while(strcmp(op[i].op.rotate.p->name,vn->name) != 0){
+	      vn = vn->next;
+	      if(!vn){
+		break;
+	      }
 	    }
-	  }if(!vn){
-	    vn = knobs[f]->next;
+	  }if(!vn) {
 	    break;
 	  }
 	  xval = op[i].op.rotate.degrees * ( M_PI / 180 ) * vn->value;
