@@ -273,7 +273,7 @@ void my_main( int polygons ) {
       vn = knobs[f]->next;
     }
     for (i=0;i<lastop;i++) {
-      printf("(%d,%d)\n",f,i);
+      //printf("(%d,%d)\n",f,i);
       switch (op[i].opcode) {
       case SPHERE:
 	add_sphere( tmp,op[i].op.sphere.d[0], //cx
@@ -366,7 +366,6 @@ void my_main( int polygons ) {
 	  }if(!vn) {
 	    break;
 	  }
-	  printf("asdf\n");
 	  xval = op[i].op.scale.d[0] * vn->value;
 	  yval = op[i].op.scale.d[1] * vn->value;
 	  zval = op[i].op.scale.d[2] * vn->value;
