@@ -327,13 +327,11 @@ void my_main( int polygons ) {
 	//get the factors
 	if(op[i].op.move.p){
 	  if(vn){
-	    while(strcmp(op[i].op.move.p->name,vn->name) != 0){
+	    while(vn && strcmp(op[i].op.move.p->name,vn->name) != 0){
 	      vn = vn->next;
-	      if(!vn){
-		break;
-	      }
 	    }
 	  }if(!vn) {
+	    vn = knobs[f]->next;
 	    break;
 	  }
 	  xval = op[i].op.move.d[0] * vn->value;
@@ -357,13 +355,11 @@ void my_main( int polygons ) {
       case SCALE:
 	if(op[i].op.scale.p){
 	  if(vn){
-	    while(strcmp(op[i].op.scale.p->name,vn->name) != 0){
+	    while(vn && strcmp(op[i].op.scale.p->name,vn->name) != 0){
 	      vn = vn->next;
-	      if(!vn){
-		break;
-	      }
 	    }
 	  }if(!vn) {
+	    vn = knobs[f]->next;
 	    break;
 	  }
 	  xval = op[i].op.scale.d[0] * vn->value;
@@ -386,13 +382,11 @@ void my_main( int polygons ) {
       case ROTATE:
 	if(op[i].op.rotate.p){
 	  if(vn){
-	    while(strcmp(op[i].op.rotate.p->name,vn->name) != 0){
+	    while(vn && strcmp(op[i].op.rotate.p->name,vn->name) != 0){
 	      vn = vn->next;
-	      if(!vn){
-		break;
-	      }
 	    }
 	  }if(!vn) {
+	    vn = knobs[f]->next;
 	    break;
 	  }
 	  xval = op[i].op.rotate.degrees * ( M_PI / 180 ) * vn->value;
