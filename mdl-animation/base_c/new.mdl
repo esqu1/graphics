@@ -16,7 +16,7 @@ push
 rotate z -45
 rotate x 360 rot3
 torus 0 0 0 20 160
-vary rott 0 58 0 1
-vary rot1 0 58 0 1
-vary rot2 0 58 0 1
-vary rot3 0 58 0 1
+vary rott 0 59 0 1
+vary rot1 0 59 0 1
+vary rot2 0 59 0 1
+vary rot3 0 59 0 1
