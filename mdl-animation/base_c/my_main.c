@@ -319,6 +319,7 @@ void my_main( int polygons ) {
 		  op[i].op.line.p1[0],
 		  op[i].op.line.p1[1],
 		  op[i].op.line.p1[1]);
+	matrix_mult( s->data[s->top], tmp);
 	draw_lines( tmp, t, g );
 	tmp->lastcol = 0;
 	break;
