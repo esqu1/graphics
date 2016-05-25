@@ -58,15 +58,15 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
     if ( calculate_dot( polygons, i ) < 0 ) {
-      xB = min(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+1]);
-      yB = min(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+1]);
-      zB = min(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+1]);
-      xT = max(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+1]);
-      yT = max(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+1]);
-      zT = max(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+1]);
-      xM = mid(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+1]);
-      yM = mid(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+1]);
-      zM = mid(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+1]);
+      xB = min3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+      yB = min3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
+      zB = min3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
+      xT = max3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+      yT = max3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
+      zT = max3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
+      xM = mid3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+      yM = mid3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
+      zM = mid3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
       
       if (yB != yT){
 	Mxy1 = (xB - xT) / (yB - yT);
@@ -80,34 +80,26 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	Mxy3 = (xM - xT) / (yM - yT);
 	Mzy3 = (zM - zT) / (yM - yT);
       }
+      printf("%f %f %f\n",polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+      printf("%f\n",xB);
+      printf("%f %f %f %f %f %f %f %f %f\n",xB,yB,zB,xT,yT,zT,xM,yM,zM);
 
       // we run x0 along B->T
       x0 = xB; y0 = yB; z0 = zB;
-      x1 = xB; y1 = yB; z1 = zB;
+      x1 = xB; z1 = zB;
       while(y0 < yT){
 	if (y0 >= yM){
 	  x0 = xM + Mxy3 * (y0 - yM);
 	  z0 = zM + Mzy3 * (y0 - yM);
 	}
-      
-      
-      
-      
-      draw_line( polygons->m[0][i],
-		 polygons->m[1][i],
-		 polygons->m[0][i+1],
-		 polygons->m[1][i+1],
-		 s, c);
-      draw_line( polygons->m[0][i+1],
-		 polygons->m[1][i+1],
-		 polygons->m[0][i+2],
-		 polygons->m[1][i+2],
-		 s, c);
-      draw_line( polygons->m[0][i+2],
-		 polygons->m[1][i+2],
-		 polygons->m[0][i],
-		 polygons->m[1][i],
-		 s, c);
+	draw_line(x0,y0,x1,y0,s,c);
+	x0 += Mxy1; y0 += 1; z0 += Mzy1;
+	if(y0 < yM){
+	  x1 += Mxy2; z1 += Mzy2;
+	}else{
+	  x1 += Mxy3; z1 += Mzy3;
+	}
+      }     
     }
   }
 }
