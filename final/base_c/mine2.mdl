@@ -1,0 +1,30 @@
+frames 60
+basename myimg2
+push
+move 250 250 0
+scale 2 2 2
+rotate y 360 spin
+rotate x 30
+torus 0 0 0 10 100
+push
+move 0 50 0
+torus 0 0 0 10 75
+pop
+push
+move 0 -50 0
+torus 0 0 0 10 75
+pop
+move 0 100 0 vib1
+move 0 100 0 vib2
+move 0 100 0 vib3
+move 0 100 0 vib4
+move 0 100 0 vib5
+move 0 100 0 vib6
+sphere 0 0 0 30
+vary spin 0 59 0 1
+vary vib1 0 9 -1 1
+vary vib2 10 19 1 -1
+vary vib3 20 29 -1 1
+vary vib4 30 39 1 -1
+vary vib5 40 49 -1 1
+vary vib6 50 59 1 -1
