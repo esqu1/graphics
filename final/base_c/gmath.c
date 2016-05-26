@@ -122,3 +122,66 @@ double min3(double a, double b, double c){
   }
   return a;
 }
+
+
+double extract(struct matrix * polygons, int mode, int minmidmax, int i){
+  double x;
+  if(minmidmax == 1){
+    x = min3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+    if(mode == 1){
+      return x;
+    }else if (mode == 2){
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[1][i+k];
+	}
+      }
+    }else{
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[2][i+k];
+	}
+      }
+    }
+  }else if(minmidmax == 2){
+    x = mid3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+    if(mode == 1){
+      return x;
+    }else if (mode == 2){
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[1][i+k];
+	}
+      }
+    }else{
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[2][i+k];
+	}
+      }
+    }
+  }else{
+    x = max3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
+    if(mode == 1){
+      return x;
+    }else if (mode == 2){
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[1][i+k];
+	}
+      }
+    }else{
+      int k;
+      for (k = 0; k < 3; k++){
+	if(polygons->m[0][i+k] == x){
+	  return polygons->m[2][i+k];
+	}
+      }
+    }
+  }
+}

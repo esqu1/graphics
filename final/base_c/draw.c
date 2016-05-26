@@ -9,24 +9,24 @@
 #include "gmath.h"
 
 /*======== void add_polygon() ==========
-Inputs:   struct matrix *surfaces
-         double x0
-         double y0
-         double z0
-         double x1
-         double y1
-         double z1
-         double x2
-         double y2
-         double z2  
-Returns: 
-Adds the vertices (x0, y0, z0), (x1, y1, z1)
-and (x2, y2, z2) to the polygon matrix. They
-define a single triangle surface.
+  Inputs:   struct matrix *surfaces
+  double x0
+  double y0
+  double z0
+  double x1
+  double y1
+  double z1
+  double x2
+  double y2
+  double z2  
+  Returns: 
+  Adds the vertices (x0, y0, z0), (x1, y1, z1)
+  and (x2, y2, z2) to the polygon matrix. They
+  define a single triangle surface.
 
-04/16/13 13:05:59
-jdyrlandweaver
-====================*/
+  04/16/13 13:05:59
+  jdyrlandweaver
+  ====================*/
 void add_polygon( struct matrix *polygons, 
 		  double x0, double y0, double z0, 
 		  double x1, double y1, double z1, 
@@ -37,36 +37,32 @@ void add_polygon( struct matrix *polygons,
 }
 
 /*======== void draw_polygons() ==========
-Inputs:   struct matrix *polygons
-          screen s
-          color c  
-Returns: 
-Goes through polygons 3 points at a time, drawing 
-lines connecting each points to create bounding
-triangles
+  Inputs:   struct matrix *polygons
+  screen s
+  color c  
+  Returns: 
+  Goes through polygons 3 points at a time, drawing 
+  lines connecting each points to create bounding
+  triangles
 
-04/16/13 13:13:27
-jdyrlandweaver
-====================*/
+  04/16/13 13:13:27
+  jdyrlandweaver
+  ====================*/
 void draw_polygons( struct matrix *polygons, screen s, color c ) {
 
   int i;
   double xB,yB,zB,xT,yT,zT,xM,yM,zM; 
+  double* p1,p2,p3;
   double Mxy1, Mzy1, Mxy2, Mzy2, Mxy3, Mzy3; // slopes of x and z w.r.t y
   /* M1 is between B and T, M2 is between B and M, M3 is between M and T */
   double x0,y0,z0,x1,y1,z1;
   
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
     if ( calculate_dot( polygons, i ) < 0 ) {
-      xB = min3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
-      yB = min3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
-      zB = min3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
-      xT = max3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
-      yT = max3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
-      zT = max3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
-      xM = mid3(polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
-      yM = mid3(polygons->m[1][i],polygons->m[1][i+1],polygons->m[1][i+2]);
-      zM = mid3(polygons->m[2][i],polygons->m[2][i+1],polygons->m[2][i+2]);
+      xB = extract(polygons,1,1,i); yB = extract(polygons,2,1,i); zB = extract(polygons,3,1,i);
+      xM = extract(polygons,1,2,i); yM = extract(polygons,2,2,i); zM = extract(polygons,3,2,i);
+      xT = extract(polygons,1,3,i); yT = extract(polygons,2,3,i); zT = extract(polygons,3,3,i);
+
       
       if (yB != yT){
 	Mxy1 = (xB - xT) / (yB - yT);
@@ -107,10 +103,10 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 
 /*======== void add_sphere() ==========
   Inputs:   struct matrix * points
-            double cx
-	    double cy
-	    double r
-	    double step  
+  double cx
+  double cy
+  double r
+  double step  
   Returns: 
 
   adds all the points for a sphere with center 
@@ -186,10 +182,10 @@ void add_sphere( struct matrix * points,
 
 /*======== void generate_sphere() ==========
   Inputs:   struct matrix * points
-            double cx
-	    double cy
-	    double r
-	    double step  
+  double cx
+  double cy
+  double r
+  double step  
   Returns: 
 
   Generates all the points along the surface of a 
@@ -232,11 +228,11 @@ void generate_sphere( struct matrix * points,
 
 /*======== void add_torus() ==========
   Inputs:   struct matrix * points
-            double cx
-	    double cy
-	    double r1
-	    double r2
-	    double step  
+  double cx
+  double cy
+  double r1
+  double r2
+  double step  
   Returns: 
 
   adds all the points required to make a torus
@@ -320,10 +316,10 @@ void add_torus( struct matrix * points,
 
 /*======== void generate_torus() ==========
   Inputs:   struct matrix * points
-            double cx
-	    double cy
-	    double r
-	    double step  
+  double cx
+  double cy
+  double r
+  double step  
   Returns: 
 
   Generates all the points along the surface of a 
@@ -365,12 +361,12 @@ void generate_torus( struct matrix * points,
 
 /*======== void add_box() ==========
   Inputs:   struct matrix * points
-            double x
-	    double y
-	    double z
-	    double width
-	    double height
-	    double depth
+  double x
+  double y
+  double z
+  double width
+  double height
+  double depth
   Returns: 
 
   add the points for a rectagular prism whose 
@@ -445,10 +441,10 @@ void add_box( struct matrix * polygons,
   
 /*======== void add_circle() ==========
   Inputs:   struct matrix * points
-            double cx
-	    double cy
-	    double y
-	    double step  
+  double cx
+  double cy
+  double y
+  double step  
   Returns: 
 
 
@@ -478,26 +474,26 @@ void add_circle( struct matrix * points,
 }
 
 /*======== void add_curve() ==========
-Inputs:   struct matrix *points
-         double x0
-         double y0
-         double x1
-         double y1
-         double x2
-         double y2
-         double x3
-         double y3
-         double step
-         int type  
-Returns: 
+  Inputs:   struct matrix *points
+  double x0
+  double y0
+  double x1
+  double y1
+  double x2
+  double y2
+  double x3
+  double y3
+  double step
+  int type  
+  Returns: 
 
-Adds the curve bounded by the 4 points passsed as parameters
-of type specified in type (see matrix.h for curve type constants)
-to the matrix points
+  Adds the curve bounded by the 4 points passsed as parameters
+  of type specified in type (see matrix.h for curve type constants)
+  to the matrix points
 
-03/16/12 15:24:25
-jdyrlandweaver
-====================*/
+  03/16/12 15:24:25
+  jdyrlandweaver
+  ====================*/
 void add_curve( struct matrix *points, 
 		double x0, double y0, 
 		double x1, double y1, 
@@ -521,8 +517,8 @@ void add_curve( struct matrix *points,
   }
 
   /*
-  printf("a = %lf b = %lf c = %lf d = %lf\n", xcoefs->m[0][0],
-         xcoefs->m[1][0], xcoefs->m[2][0], xcoefs->m[3][0]);
+    printf("a = %lf b = %lf c = %lf d = %lf\n", xcoefs->m[0][0],
+    xcoefs->m[1][0], xcoefs->m[2][0], xcoefs->m[3][0]);
   */
 
   for (t=step; t <= 1; t+= step) {
@@ -543,14 +539,14 @@ void add_curve( struct matrix *points,
 }
 
 /*======== void add_point() ==========
-Inputs:   struct matrix * points
-         int x
-         int y
-         int z 
-Returns: 
-adds point (x, y, z) to points and increment points.lastcol
-if points is full, should call grow on points
-====================*/
+  Inputs:   struct matrix * points
+  int x
+  int y
+  int z 
+  Returns: 
+  adds point (x, y, z) to points and increment points.lastcol
+  if points is full, should call grow on points
+  ====================*/
 void add_point( struct matrix * points, double x, double y, double z) {
   
   if ( points->lastcol == points->cols )
@@ -565,12 +561,12 @@ void add_point( struct matrix * points, double x, double y, double z) {
 }
 
 /*======== void add_edge() ==========
-Inputs:   struct matrix * points
-          int x0, int y0, int z0, int x1, int y1, int z1
-Returns: 
-add the line connecting (x0, y0, z0) to (x1, y1, z1) to points
-should use add_point
-====================*/
+  Inputs:   struct matrix * points
+  int x0, int y0, int z0, int x1, int y1, int z1
+  Returns: 
+  add the line connecting (x0, y0, z0) to (x1, y1, z1) to points
+  should use add_point
+  ====================*/
 void add_edge( struct matrix * points, 
 	       double x0, double y0, double z0, 
 	       double x1, double y1, double z1) {
@@ -579,13 +575,13 @@ void add_edge( struct matrix * points,
 }
 
 /*======== void draw_lines() ==========
-Inputs:   struct matrix * points
-         screen s
-         color c 
-Returns: 
-Go through points 2 at a time and call draw_line to add that line
-to the screen
-====================*/
+  Inputs:   struct matrix * points
+  screen s
+  color c 
+  Returns: 
+  Go through points 2 at a time and call draw_line to add that line
+  to the screen
+  ====================*/
 void draw_lines( struct matrix * points, screen s, color c) {
 
   int i;
@@ -603,22 +599,22 @@ void draw_lines( struct matrix * points, screen s, color c) {
     //FOR DEMONSTRATION PURPOSES ONLY
     //draw extra pixels so points can actually be seen    
     /*
-    draw_line( points->m[0][i]+1, points->m[1][i], 
-	       points->m[0][i+1]+1, points->m[1][i+1], s, c);
-    draw_line( points->m[0][i], points->m[1][i]+1, 
-	       points->m[0][i+1], points->m[1][i+1]+1, s, c);
-    draw_line( points->m[0][i]-1, points->m[1][i], 
-	       points->m[0][i+1]-1, points->m[1][i+1], s, c);
-    draw_line( points->m[0][i], points->m[1][i]-1, 
-	       points->m[0][i+1], points->m[1][i+1]-1, s, c);
-    draw_line( points->m[0][i]+1, points->m[1][i]+1, 
-	       points->m[0][i+1]+1, points->m[1][i+1]+1, s, c);
-    draw_line( points->m[0][i]-1, points->m[1][i]+1, 
-	       points->m[0][i+1]-1, points->m[1][i+1]+1, s, c);
-    draw_line( points->m[0][i]-1, points->m[1][i]-1, 
-	       points->m[0][i+1]-1, points->m[1][i+1]-1, s, c);
-    draw_line( points->m[0][i]+1, points->m[1][i]-1, 
-	       points->m[0][i+1]+1, points->m[1][i+1]-1, s, c);
+      draw_line( points->m[0][i]+1, points->m[1][i], 
+      points->m[0][i+1]+1, points->m[1][i+1], s, c);
+      draw_line( points->m[0][i], points->m[1][i]+1, 
+      points->m[0][i+1], points->m[1][i+1]+1, s, c);
+      draw_line( points->m[0][i]-1, points->m[1][i], 
+      points->m[0][i+1]-1, points->m[1][i+1], s, c);
+      draw_line( points->m[0][i], points->m[1][i]-1, 
+      points->m[0][i+1], points->m[1][i+1]-1, s, c);
+      draw_line( points->m[0][i]+1, points->m[1][i]+1, 
+      points->m[0][i+1]+1, points->m[1][i+1]+1, s, c);
+      draw_line( points->m[0][i]-1, points->m[1][i]+1, 
+      points->m[0][i+1]-1, points->m[1][i+1]+1, s, c);
+      draw_line( points->m[0][i]-1, points->m[1][i]-1, 
+      points->m[0][i+1]-1, points->m[1][i+1]-1, s, c);
+      draw_line( points->m[0][i]+1, points->m[1][i]-1, 
+      points->m[0][i+1]+1, points->m[1][i+1]-1, s, c);
     */
   } 	       
 }
