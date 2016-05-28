@@ -262,6 +262,10 @@ void my_main( int polygons ) {
   g.green = 179;
   g.blue = 102;
 
+  int a,b;
+
+  
+
   first_pass();
   knobs = second_pass();
   if(basename){
@@ -269,6 +273,12 @@ void my_main( int polygons ) {
   }
 
   for(f=0;f<num_frames;f++){
+    srand(0);
+    for(a = 0; a < XRES; a++){
+      for(b = 0; b < YRES; b++){
+	t[a][b].zbuf = -DBL_MAX;
+      }
+    }
     if(num_frames > 1){
       vn = knobs[f]->next;
     }

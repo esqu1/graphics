@@ -52,8 +52,8 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 
   int i;
 
-  printf("%d\n",polygons->lastcol-2);
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
+    c.red = rand() % 255; c.green = rand() % 255; c.blue = rand() % 255;
 
     double xB=0,yB=0,zB=0,xT=0,yT=0,zT=0,xM=0,yM=0,zM=0; 
     double Mxy1=0, Mzy1=0, Mxy2=0, Mzy2=0, Mxy3=0, Mzy3=0; // slopes of x and z w.r.t y
@@ -113,7 +113,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	  x1 = xM + Mxy3 * (y0 - yM);
 	  z1 = zM + Mzy3 * (y0 - yM);
 	}
-	draw_line(x0,y0,z0,x1,y0,z1,s,c);
+	draw_horz_line(ceil(x0),floor(x1),y0,z0,z1,s,c);
 	x0 += Mxy1; y0 += 1; z0 += Mzy1;
 	if(y0 < yM){
 	  x1 += Mxy2; z1 += Mzy2;
@@ -623,6 +623,24 @@ void draw_lines( struct matrix * points, screen s, color c) {
   } 	       
 }
 
+void draw_horz_line(int x0, int x1, int y, double z0, double z1, screen s, color c){
+  int i;
+  double z = z0;
+  if(x0 <= x1){
+    double m = (z1 - z0) / (x1 - x0);
+    for (i = x0; i <= x1; i++){
+      plot_z(s,c,i,y,z);
+      z += m;
+    }
+  }else{
+    double m = (z1 - z0) / (x0 - x1);
+    for (i = x1; i <= x0; i++){
+      plot_z(s,c,i,y,z);
+      z += m;
+    }
+    }
+}
+
 
 void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c) {
  
@@ -640,7 +658,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
     y1 = y0;
   }
 
-  m = 1.0* (z1 - z0) / (x1 - x0);
+  m = (z1 - z0) / (x1 - x0);
 
   //need to know dx and dy for this version
   dx = (x1 - x) * 2;
@@ -654,7 +672,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
       d = dy - ( dx / 2 );
   
       while ( x <= x1 ) {
-	plot(s, c, x, y, z);
+	plot_z(s, c, x, y, z);
 
 	if ( d < 0 ) {
 	  x = x + 1;
@@ -675,7 +693,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
       d = ( dy / 2 ) - dx;
       while ( y <= y1 ) {
 
-	plot(s, c, x, y, z );
+	plot_z(s, c, x, y, z );
 	if ( d > 0 ) {
 	  y = y + 1;
 	  d = d - dx;
@@ -700,7 +718,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
   
       while ( x <= x1 ) {
 
-	plot(s, c, x, y, z);
+	plot_z(s, c, x, y, z);
 
 	if ( d > 0 ) {
 	  x = x + 1;
@@ -723,7 +741,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
 
       while ( y >= y1 ) {
 	
-	plot(s, c, x, y, z );
+	plot_z(s, c, x, y, z );
 	if ( d < 0 ) {
 	  y = y - 1;
 	  d = d + dx;

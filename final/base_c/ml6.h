@@ -16,16 +16,17 @@ a pixel as a color triple
 #define XRES 500
 #define YRES 500
 #define MAX_COLOR 255
+#define MIN -DBL_MAX
 
 /*
   Every point has an individual int for
   each color value
 */
 struct point_t {
-int red;
-int green;
-int blue;
-double zbuf;
+  double zbuf;
+  int red;
+  int green;
+  int blue;
 } point_t;
 
 /*

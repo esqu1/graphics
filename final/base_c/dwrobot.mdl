@@ -16,13 +16,13 @@ box 0 0 20 50 200 40
 //left arm
 pop
 push
-move -100 150 0
+move -105 150 0
 rotate x -50
 box -50 0 0 50 200 40
 //right leg
 pop
 push
-move 100 -150 0
+move 99 -150 0
 rotate x -20
 box -60 0 20 60 100 40
 //left leg
@@ -32,4 +32,5 @@ move -100 -150 0
 rotate x 20
 box 0 0 20 60 100 40
 display
+save dwrobot.png
 quit
