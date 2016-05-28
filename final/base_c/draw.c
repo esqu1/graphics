@@ -51,17 +51,45 @@ void add_polygon( struct matrix *polygons,
 void draw_polygons( struct matrix *polygons, screen s, color c ) {
 
   int i;
-  double xB,yB,zB,xT,yT,zT,xM,yM,zM; 
-  double* p1,p2,p3;
-  double Mxy1, Mzy1, Mxy2, Mzy2, Mxy3, Mzy3; // slopes of x and z w.r.t y
-  /* M1 is between B and T, M2 is between B and M, M3 is between M and T */
-  double x0,y0,z0,x1,y1,z1;
-  
+
+  printf("%d\n",polygons->lastcol-2);
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
+    double xB=0,yB=0,zB=0,xT=0,yT=0,zT=0,xM=0,yM=0,zM=0; 
+    double Mxy1=0, Mzy1=0, Mxy2=0, Mzy2=0, Mxy3=0, Mzy3=0; // slopes of x and z w.r.t y
+    /* M1 is between B and T, M2 is between B and M, M3 is between M and T */
+    double x0=0,y0=0,z0=0,x1=0,z1=0;
     if ( calculate_dot( polygons, i ) < 0 ) {
-      xB = extract(polygons,1,1,i); yB = extract(polygons,2,1,i); zB = extract(polygons,3,1,i);
-      xM = extract(polygons,1,2,i); yM = extract(polygons,2,2,i); zM = extract(polygons,3,2,i);
-      xT = extract(polygons,1,3,i); yT = extract(polygons,2,3,i); zT = extract(polygons,3,3,i);
+      if(polygons->m[1][i] <= polygons->m[1][i+1]){
+	if(polygons->m[1][i+2] >= polygons->m[1][i+1]){
+	  xB = polygons->m[0][i]; yB = polygons->m[1][i]; zB = polygons->m[2][i];
+	  xM = polygons->m[0][i+1]; yM = polygons->m[1][i+1]; zM = polygons->m[2][i+1];
+	  xT = polygons->m[0][i+2]; yT = polygons->m[1][i+2]; zT = polygons->m[2][i+2];
+	}else if(polygons->m[1][i+2] >= polygons->m[1][i]){
+	  xB = polygons->m[0][i]; yB = polygons->m[1][i]; zB = polygons->m[2][i];
+	  xT = polygons->m[0][i+1]; yT = polygons->m[1][i+1]; zT = polygons->m[2][i+1];
+	  xM = polygons->m[0][i+2]; yM = polygons->m[1][i+2]; zM = polygons->m[2][i+2];	  
+	}else{	  
+	  xM = polygons->m[0][i]; yM = polygons->m[1][i]; zM = polygons->m[2][i];
+	  xT = polygons->m[0][i+1]; yT = polygons->m[1][i+1]; zT = polygons->m[2][i+1];
+	  xB = polygons->m[0][i+2]; yB = polygons->m[1][i+2]; zB = polygons->m[2][i+2];	  
+	}
+      }else{
+	if(polygons->m[1][i+2] >= polygons->m[1][i]){
+	  xM = polygons->m[0][i]; yM = polygons->m[1][i]; zM = polygons->m[2][i];
+	  xB = polygons->m[0][i+1]; yB = polygons->m[1][i+1]; zB = polygons->m[2][i+1];
+	  xT = polygons->m[0][i+2]; yT = polygons->m[1][i+2]; zT = polygons->m[2][i+2];
+	}else if(polygons->m[1][i+2] >= polygons->m[1][i+1]){
+	  xT = polygons->m[0][i]; yT = polygons->m[1][i]; zT = polygons->m[2][i];
+	  xB = polygons->m[0][i+1]; yB = polygons->m[1][i+1]; zB = polygons->m[2][i+1];
+	  xM = polygons->m[0][i+2]; yM = polygons->m[1][i+2]; zM = polygons->m[2][i+2];	  
+	}else{	  
+	  xT = polygons->m[0][i]; yT = polygons->m[1][i]; zT = polygons->m[2][i];
+	  xM = polygons->m[0][i+1]; yM = polygons->m[1][i+1]; zM = polygons->m[2][i+1];
+	  xB = polygons->m[0][i+2]; yB = polygons->m[1][i+2]; zB = polygons->m[2][i+2];	  
+	}
+      }
+
+      printf("%f, %f, %f, %f, %f, %f, %f, %f, %f\n",xB,yB,zB,xM,yM,zM,xT,yT,zT);
 
       
       if (yB != yT){
@@ -76,17 +104,14 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	Mxy3 = (xM - xT) / (yM - yT);
 	Mzy3 = (zM - zT) / (yM - yT);
       }
-      printf("%f %f %f\n",polygons->m[0][i],polygons->m[0][i+1],polygons->m[0][i+2]);
-      printf("%f\n",xB);
-      printf("%f %f %f %f %f %f %f %f %f\n",xB,yB,zB,xT,yT,zT,xM,yM,zM);
 
       // we run x0 along B->T
       x0 = xB; y0 = yB; z0 = zB;
       x1 = xB; z1 = zB;
-      while(y0 < yT){
+      while(y0 <= yT){
 	if (y0 >= yM){
-	  x0 = xM + Mxy3 * (y0 - yM);
-	  z0 = zM + Mzy3 * (y0 - yM);
+	  x1 = xM + Mxy3 * (y0 - yM);
+	  z1 = zM + Mzy3 * (y0 - yM);
 	}
 	draw_line(x0,y0,x1,y0,s,c);
 	x0 += Mxy1; y0 += 1; z0 += Mzy1;
