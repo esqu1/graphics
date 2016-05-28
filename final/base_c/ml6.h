@@ -8,6 +8,8 @@ as the maximum color value you want to use.
 Creates the point structure in order to represent 
 a pixel as a color triple
 =========================*/
+#include <float.h>
+
 #ifndef ML6_H
 #define ML6_H
 
@@ -20,10 +22,10 @@ a pixel as a color triple
   each color value
 */
 struct point_t {
-
-  int red;
-  int green;
-  int blue;
+int red;
+int green;
+int blue;
+double zbuf;
 } point_t;
 
 /*

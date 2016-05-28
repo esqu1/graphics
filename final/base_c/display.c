@@ -75,10 +75,13 @@ pixel 0, 0 located at the lower left corner of the screen
 02/12/10 09:09:00
 jdyrlandweaver
 ====================*/
-void plot( screen s, color c, int x, int y) {
+void plot( screen s, color c, int x, int y, double z) {
   int newy = YRES - 1 - y;
-  if ( x >= 0 && x < XRES && newy >=0 && newy < YRES )
+  if ( z > s[x][newy].zbuf && x >= 0 && x < XRES && newy >=0 && newy < YRES ){
     s[x][newy] = c;
+    s[x][newy].zbuf = z;
+  }
+
 }
 
 /*======== void clear_screen() ==========
