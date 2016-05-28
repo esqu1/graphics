@@ -295,7 +295,6 @@ void my_main( int polygons ) {
 	matrix_mult( s->data[ s->top ], tmp );
 	draw_polygons( tmp, t, g );
 	tmp->lastcol = 0;
-	
 	break;
 
       case TORUS:

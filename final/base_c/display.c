@@ -77,7 +77,7 @@ jdyrlandweaver
 ====================*/
 void plot_z( screen s, color c, int x, int y, double z) {
   int newy = YRES - 1 - y;
-  if ( z > s[x][newy].zbuf && x >= 0 && x < XRES && newy >=0 && newy < YRES ){
+  if ( x >= 0 && x < XRES && newy >=0 && newy < YRES && z > s[x][newy].zbuf ){
     s[x][newy] = c;
     s[x][newy].zbuf = z;
   }

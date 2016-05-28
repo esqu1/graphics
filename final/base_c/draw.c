@@ -91,6 +91,8 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	}
       }
 
+      //printf("%f, %f, %f, %f, %f, %f, %f, %f, %f\n",xB,yB,zB,xM,yM,zM,xT,yT,zT);
+
       
       if (yB != yT){
 	Mxy1 = (xB - xT) / (yB - yT);
@@ -638,7 +640,7 @@ void draw_horz_line(int x0, int x1, int y, double z0, double z1, screen s, color
       plot_z(s,c,i,y,z);
       z += m;
     }
-    }
+  }
 }
 
 

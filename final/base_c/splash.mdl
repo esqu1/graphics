@@ -5,11 +5,11 @@ move 250 250 0
 rotate y 15
 rotate x 30
 push
-rotate y 180 nyeh
+rotate y 360 nyeh
 box -50 25 50 100 100 100
 pop
 push
-move 0 50 0
+move 0 57 0
 move 0 50 0 drop
 move 0 50 0 bounce
 sphere 0 0 0 25
