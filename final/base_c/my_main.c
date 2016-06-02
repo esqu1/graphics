@@ -252,7 +252,6 @@ void my_main( int polygons ) {
 
   struct vary_node **knobs;
   struct vary_node * vn;
-  struct vary_node * sf; // For one frame only
   char frame_name[128];
 
   num_frames = 1;
@@ -264,7 +263,28 @@ void my_main( int polygons ) {
 
   int a,b;
 
-  
+  struct constants K;
+  K.r[amb] = 1;
+  K.g[amb] = 1;
+  K.b[amb] = 1;
+
+  K.r[dif] = 0;
+  K.g[dif] = 0;
+  K.b[dif] = 0;
+
+  K.r[spe] = 0;
+  K.g[spe] = 0;
+  K.b[spe] = 0;
+
+  struct light lights[10];
+  int num_lights = 1;
+
+  lights[0].l[0] = 0;
+  lights[0].l[1] = 1;
+  lights[0].l[2] = 1;
+  lights[0].c[RED] = 12;
+  lights[0].c[GREEN] = 190;
+  lights[0].c[BLUE] = 190;
 
   first_pass();
   knobs = second_pass();
@@ -293,7 +313,7 @@ void my_main( int polygons ) {
 		    step);
 	//apply the current top origin
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygons( tmp, t, g, K, lights, num_lights );
 	tmp->lastcol = 0;
 	break;
 
@@ -305,7 +325,7 @@ void my_main( int polygons ) {
 		   op[i].op.torus.r1,
 		   step);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygons( tmp, t, g, K, lights, num_lights );
 	tmp->lastcol = 0;
 	break;
 
@@ -317,7 +337,7 @@ void my_main( int polygons ) {
 		 op[i].op.box.d1[1],
 		 op[i].op.box.d1[2]);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygons( tmp, t, g, K, lights, num_lights );
 	tmp->lastcol = 0;
 	break;
 
@@ -411,6 +431,11 @@ void my_main( int polygons ) {
 	//put the new matrix on the top
 	copy_matrix( transform, s->data[ s->top ] );
 	free_matrix( transform );
+	break;
+      case AMBIENT:
+	K.r[amb] = op[i].op.ambient.c[0];
+	K.g[amb] = op[i].op.ambient.c[1];
+	K.b[amb] = op[i].op.ambient.c[2];
 	break;
       case PUSH:
 	push( s );

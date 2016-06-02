@@ -7,6 +7,7 @@
 #include "draw.h"
 #include "matrix.h"
 #include "gmath.h"
+#include "symtab.h"
 
 /*======== void add_polygon() ==========
   Inputs:   struct matrix *surfaces
@@ -48,12 +49,12 @@ void add_polygon( struct matrix *polygons,
   04/16/13 13:13:27
   jdyrlandweaver
   ====================*/
-void draw_polygons( struct matrix *polygons, screen s, color c ) {
+void draw_polygons( struct matrix *polygons, screen s, color c, struct constants K, struct light * lights, int num_lights ) {
 
   int i;
 
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
-    c.red = rand() % 255; c.green = rand() % 255; c.blue = rand() % 255;
+    c.red = 0; c.green = 0; c.blue = 0;
 
     double xB=0,yB=0,zB=0,xT=0,yT=0,zT=0,xM=0,yM=0,zM=0; 
     double Mxy1=0, Mzy1=0, Mxy2=0, Mzy2=0, Mxy3=0, Mzy3=0; // slopes of x and z w.r.t y
@@ -92,7 +93,6 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
       }
 
       //printf("%f, %f, %f, %f, %f, %f, %f, %f, %f\n",xB,yB,zB,xM,yM,zM,xT,yT,zT);
-
       
       if (yB != yT){
 	Mxy1 = (xB - xT) / (yB - yT);
@@ -106,6 +106,11 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	Mxy3 = (xM - xT) / (yM - yT);
 	Mzy3 = (zM - zT) / (yM - yT);
       }
+
+      c.red += lights[0].c[RED]*K.r[amb];
+      c.green += lights[0].c[GREEN]*K.g[amb];
+      c.blue += lights[0].c[BLUE]*K.b[amb];
+
 
       // we run x0 along B->T
       x0 = xB; y0 = yB; z0 = zB;

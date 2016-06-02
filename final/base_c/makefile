@@ -32,7 +32,7 @@ my_main.o: my_main.c misc_headers.h print_pcode.c matrix.h display.h ml6.h draw.
 display.o: display.c display.h ml6.h matrix.h
 	$(CC) $(CFLAGS) -c display.c
 
-draw.o: draw.c draw.h display.h ml6.h matrix.h gmath.h
+draw.o: draw.c draw.h display.h ml6.h matrix.h gmath.h symtab.h
 	$(CC) $(CFLAGS) -c draw.c
 
 gmath.o: gmath.c gmath.h matrix.h

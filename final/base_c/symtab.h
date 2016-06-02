@@ -9,6 +9,15 @@
 #define SYM_FILE   5
 #define SYM_STRING 5
 
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+
+#define amb 0
+#define dif 1
+#define spe 2
+
+
 struct constants 
 {
   double r[4];
