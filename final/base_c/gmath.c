@@ -20,7 +20,7 @@
   04/17/12 16:46:30
   jonalf
   ====================*/
-double * calculate_normal( double ax, double ay, double az,	
+double * calculate_normal( double ax, double ay, double az,
 			   double bx, double by, double bz ) {
   
   double *normal;
